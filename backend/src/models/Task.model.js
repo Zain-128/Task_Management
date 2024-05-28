@@ -12,4 +12,6 @@ const TaskSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default TaskSchema;
+const model = mongoose.model("Task", TaskSchema);
+
+export default model;
