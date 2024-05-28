@@ -1,8 +1,15 @@
 import TaskModel from "../models/Task.model.js";
 
-const getAllTasks = async () => {
+const getAllTasks = async (req, res, next) => {
   try {
-  } catch (error) {}
+    const tasks = await TaskModel.find({});
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Task Retreived !", data: tasks });
+  } catch (error) {
+    return next(error);
+  }
 };
 const addTask = async (req, res, next) => {
   try {
@@ -33,18 +40,52 @@ const addTask = async (req, res, next) => {
     return next(error);
   }
 };
-const updateTask = async () => {
+const updateTask = async (req, res, next) => {
   try {
-  } catch (error) {}
+    const { id } = req.params;
+
+    // Find the Object and Update it
+    const task = await TaskModel.findByIdAndUpdate(id, req.body);
+
+    if (!task) {
+      return next({
+        status: 404,
+        message: "No Task Found !",
+      });
+    }
+    // Return the Response
+
+    return res.status(200).json({
+      success: true,
+      message: "Task Updated Successfully ! ",
+    });
+  } catch (error) {
+    return next(error);
+  }
 };
-const deleteTask = async () => {
+const deleteTask = async (req, res, next) => {
   try {
-  } catch (error) {}
+    const { id } = req.params;
+
+    // Find the Object and Update it
+    const task = await TaskModel.findByIdAndDelete(id);
+
+    if (!task) {
+      return next({
+        status: 404,
+        message: "No Task Found !",
+      });
+    }
+
+    // Return the Response
+
+    return res.status(200).json({
+      success: true,
+      message: "Task Deleted Successfully ! ",
+    });
+  } catch (error) {
+    return next(error);
+  }
 };
 
-const getTaskById = async () => {
-  try {
-  } catch (error) {}
-};
-
-export { getAllTasks, getTaskById, addTask, deleteTask, updateTask };
+export { getAllTasks, addTask, deleteTask, updateTask };
