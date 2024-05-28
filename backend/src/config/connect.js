@@ -7,6 +7,7 @@ const ConnectToMongo = async () => {
         console.log("Mongo Connected !")
     }catch(error){
 
+        await mongoose.disconnect()
         console.log("Mongo Error : ", error)
         process.exit(1)
     }
